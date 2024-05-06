@@ -1,4 +1,6 @@
 from flask import Flask, redirect, url_for, request, render_template, session
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from sklearn.preprocessing import LabelEncoder
 import pandas as pd
 import numpy as np
@@ -6,10 +8,17 @@ import pickle
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+db = SQLAlchemy(app)
+
+# Define User model
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(120), nullable=False)
 
 # Load RandomForestClassifier model
 best_model = pickle.load(open('models//heart.pkl', 'rb')) 
-
 labels = ['YES', 'NO']
 
 heart_df = pd.read_csv('dataset//heart_data.csv')
@@ -19,11 +28,9 @@ heart_df['class_prognosis'] = le.fit_transform(heart_df['target'])
 print('\nModel loaded. Start serving...')
 print('\nModel successfully loaded. Check http://127.0.0.1:5000/')
 
-# Hardcoded user data (for demonstration purposes only)
-users = {
-    'soumyadeep': '1234',
-    'shrajan': '1234'
-}
+# Create all database tables
+with app.app_context():
+    db.create_all()
 
 # Routes
 
@@ -38,7 +45,8 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username in users and users[username] == password:
+        user = User.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password, password):
             session['username'] = username
             return redirect(url_for('index'))
         else:
@@ -50,12 +58,12 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username in users:
-            return render_template('signup.html', error='Username already exists')
-        else:
-            users[username] = password
-            session['username'] = username
-            return redirect(url_for('index'))
+        hashed_password = generate_password_hash(password)
+        user = User(username=username, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        session['username'] = username
+        return redirect(url_for('index'))
     return render_template('signup.html')
 
 @app.route('/index', methods=['GET', 'POST'])
