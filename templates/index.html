@@ -11,6 +11,14 @@
         <div class="heading">
             <h1>Heart Disease Prediction</h1>
         </div>
+        {% if 'username' in session %}
+            <div class="welcome">
+                <p>Welcome, {{ session['username'] }}!</p>
+            </div>
+            <div class="logout">
+                <a href="{{ url_for('logout') }}"><button>Logout</button></a>
+            </div>
+        {% endif %}
         <form method="POST">
             <label for="Age">Age:</label>
             <input type="number" id="Age" name="Age" placeholder="Enter Age">

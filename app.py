@@ -1,16 +1,16 @@
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, redirect, url_for, request, render_template, session
 from sklearn.preprocessing import LabelEncoder
 import pandas as pd
 import numpy as np
 import pickle
 
-# Define flask app
 app = Flask(__name__)
-
-labels = ['YES', 'NO']
+app.secret_key = 'your_secret_key'
 
 # Load RandomForestClassifier model
 best_model = pickle.load(open('models//heart.pkl', 'rb')) 
+
+labels = ['YES', 'NO']
 
 heart_df = pd.read_csv('dataset//heart_data.csv')
 le = LabelEncoder()
@@ -19,9 +19,49 @@ heart_df['class_prognosis'] = le.fit_transform(heart_df['target'])
 print('\nModel loaded. Start serving...')
 print('\nModel successfully loaded. Check http://127.0.0.1:5000/')
 
+# Hardcoded user data (for demonstration purposes only)
+users = {
+    'soumyadeep': '1234',
+    'shrajan': '1234'
+}
 
-@app.route('/', methods=['GET', 'POST'])
+# Routes
+
+@app.route('/')
+def home():
+    if 'username' in session:
+        return redirect(url_for('index'))
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username in users and users[username] == password:
+            session['username'] = username
+            return redirect(url_for('index'))
+        else:
+            return render_template('login.html', error='Invalid username or password')
+    return render_template('login.html')
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username in users:
+            return render_template('signup.html', error='Username already exists')
+        else:
+            users[username] = password
+            session['username'] = username
+            return redirect(url_for('index'))
+    return render_template('signup.html')
+
+@app.route('/index', methods=['GET', 'POST'])
 def index():
+    if 'username' not in session:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         inputs = [
             request.form.get('Age'),
@@ -53,6 +93,11 @@ def index():
         return render_template('index.html', flag=True, result=result)
 
     return render_template('index.html', flag=False)
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

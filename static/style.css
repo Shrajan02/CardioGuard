@@ -10,6 +10,10 @@ body {
 	background-color: #fff;
 	border-radius: 8px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
 }
 
 h1 {
@@ -18,11 +22,10 @@ h1 {
 	text-align: center;
 	padding: 30px;
 	color: white;
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
+	border-radius: 8px;
 }
 form {
-	padding: 30px;
+	padding: 20px;
 	font-family: Arial, sans-serif;
 	display: flex;
 	flex-direction: column;
