@@ -1,129 +1,146 @@
 <!DOCTYPE html>
-
-<html lang="en" dir="ltr">
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heart Disease Predictor</title>
-  <link rel="stylesheet" type="text/css" href="../static/style.css">
-  <script src="https://kit.fontawesome.com/5f3f547070.js" crossorigin="anonymous"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css" class="css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
 </head>
-
 <body>
+    <div class="container">
+        <div class="heading">
+            <h1>Heart Disease Prediction</h1>
+        </div>
+        <form method="POST">
+            <label for="Age">Age:</label>
+            <input type="number" id="Age" name="Age" placeholder="Enter Age">
 
-  <!-- Website Title -->
+            <label for="Sex">Sex:</label>
+            <select id="Sex" name="Sex">
+                <option value="so">---select sex---</option>
+                <option value="0">Female</option>
+                <option value="1">Male</option>
+            </select>
 
-  <div class="container">
-    <h2 class='container-heading'><span class="heading_font">Heart Disease Predictor</span></h2>
-  </div>
+            <label for="cp">Chest Pain Type:</label>
+            <select id="cp" name="cp">
+                <option value="so">---select option---</option>
+                <option value="0">Typical angina</option>
+                <option value="1">Atypical angina</option>
+                <option value="2">Non-anginal pain</option>
+            </select>
 
-  <!-- Text Area -->
-  <div class="ml-container">
-    <form action="{{ url_for('predict')}}" method="POST"> 
+            <label for="trestbps">Resting Blood Pressure:</label>
+            <input type="number" id="trestbps" name="trestbps" placeholder="Enter Blood Pressure">
 
-      
-        <label for="age">Age</label>
-        <input type="text" id="age" name="age" placeholder="Your age.."><br>
+            <label for="Cholestrol">Cholesterol:</label>
+            <input type="number" id="Cholestrol" name="Cholestrol" placeholder="Enter Cholesterol Level">
 
+            <label for="fbs">Fasting Blood Sugar:</label>
+            <select id="fbs" name="fbs">
+                <option value="so">---select option---</option>
+                <option value="0">Less than 120 mg/dl</option>
+                <option value="1">Greater than 120 mg/dl</option>
+            </select>
 
+            <label for="restecg">Resting Electrocardiographic Results:</label>
+            <select id="restecg" name="restecg">
+                <option value="so">---select option---</option>
+                <option value="0">Normal</option>
+                <option value="1">ST-T wave abnormality</option>
+                <option value="2">Probable or definite left ventricular hypertrophy</option>
+            </select>
 
-        <label for="sex">Sex</label>
-        <select id="sex" name="sex">
-          <option selected>----select option----</option>
-          <option value="1">Male</option>
-          <option value="0">Female</option>
-        </select><br>
+            <label for="thalach">Maximum Heart Rate Achieved:</label>
+            <input type="number" id="thalach" name="thalach" placeholder="Enter Heart Rate">
 
+            <label for="exang">Exercise Induced Angina:</label>
+            <select id="exang" name="exang">
+                <option value="so">---select option---</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
 
+            <label for="Oldpeak">ST Depression Induced by Exercise:</label>
+            <input type="number" id="Oldpeak" name="Oldpeak" placeholder="Enter ST Depression">
 
-        <label for="cp">Chest Pain Type</label>
-        <select id="cp" name="cp">
-          <option selected>----select option----</option>
-          <option value="0">Typical Angina</option>
-          <option value="1">Atypical Angina</option>
-          <option value="2">Non-anginal Pain</option>
-          <option value="3">Asymtomatic</option>
-        </select><br>
+            <label for="slope">Slope of Peak Exercise ST Segment:</label>
+            <select id="slope" name="slope">
+                <option value="so">---select option---</option>
+                <option value="0">Upsloping</option>
+                <option value="1">Flat</option>
+                <option value="2">Downsloping</option>
+            </select>
 
+            <label for="CA">Number of Major Vessels Colored by Fluoroscopy:</label>
+            <input type="number" id="CA" name="CA" placeholder="Enter Number of Vessels">
 
+            <label for="thal">Thalassemia:</label>
+            <select id="thal" name="thal">
+                <option value="so">---select option---</option>
+                <option value="0">Normal</option>
+                <option value="1">Fixed Defect</option>
+                <option value="2">Reversible Defect</option>
+            </select>
 
-        <label for="trestbps">Resting Blood Pressure</label>
-        <input type="text" id="trestbps" name="trestbps" placeholder="A number in range [94-200] mmHg"><br>
-
-
-
-        <label for="chol">Serum Cholesterol</label>
-        <input type="text" id="chol" name="chol" placeholder="A number in range [126-564] mg/dl"><br>
-
-
-
-        <label for="fbs">Fasting Blood Sugar</label>
-        <select id="fbs" name="fbs">
-          <option selected>----select option----</option>
-          <option value="1">Greater than 120 mg/dl</option>
-          <option value="0">Less than 120 mg/dl</option>
-        </select><br>
-
-
-
-        <label for="restecg">Resting ECG Results</label>
-        <select id="restecg" name="restecg">
-          <option selected>----select option----</option>
-          <option value="0">Normal</option>
-          <option value="1">Having ST-T wave abnormality</option>
-          <option value="2">Probable or definite left ventricular
-            hypertrophy</option>
-        </select><br>
-
-
-
-        <label for="thalach">Max Heart Rate </label>
-        <input type="text" id="thalach" name="thalach" placeholder="A number in range [71-202] bpm"><br>
-
-
-        <label for="exang">Exercise-induced Angina</label>
-        <select id="exang" name="exang">
-          <option selected>----select option----</option>
-          <option value="1">Yes</option>
-          <option value="0">No</option>
-        </select><br>
-
-
-        <label for="oldpeak">ST depression</label>
-        <input type="text" id="oldpeak" name="oldpeak" placeholder="ST depression, typically in [0-6.2]"><br>
-
-
-
-        <label for="slope">slope of the peak exercise ST segment</label>
-        <select id="slope" name="slope">
-          <option selected>----select option----</option>
-          <option value="0">Upsloping</option>
-          <option value="1">Flat</option>
-          <option value="2">Downsloping</option>
-        </select><br>
-        
-
-        <label for="ca">Number of Major vessels</label>
-        <input type="text" id="ca" name="ca" placeholder="Typically in [0-4]"><br> 
-                          
-
-
-        <label for="thal">Thalassemia</label> 
-        <select id="thal" name="thal">
-          <option selected>----select option----</option>
-          <option value="0">Normal</option>
-          <option value="1">Fixed Defect</option> 
-          <option value="2">Reversible Defect</option>  
-        </select><br>
-
-      
-
-      <input type="submit" class="my-cta-button" value="Predict">
-    </form>
-  </div>
-
+            <button type="submit">Predict</button>
+        </form>
+        {% if flag %}
+            <div class="result">
+                <p>Age: {{ request.form.get('Age') }}</p>
+                <p>Sex: {{ 'Female' if request.form.get('Sex') == '0' else 'Male' }}</p>
+                {% if request.form.get('cp') == '0' %}
+                    <p>Chest pain type: Typical angina</p>
+                {% elif request.form.get('cp') == '1' %}
+                    <p>Chest pain type: Atypical angina</p>
+                {% elif request.form.get('cp') == '2' %}
+                    <p>Chest pain type: Non-anginal pain</p>
+                {% endif %}
+                <p>Resting Blood Pressure: {{ request.form.get('trestbps') }}</p>
+                <p>Cholesterol: {{ request.form.get('Cholestrol') }}</p>
+                {% if request.form.get('fbs') == '0' %}
+                    <p>Fasting Blood Sugar: Less than 120 mg/dl</p>
+                {% elif request.form.get('fbs') == '1' %}
+                    <p>Fasting Blood Sugar: Greater than 120 mg/dl</p>
+                {% endif %}
+                {% if request.form.get('restecg') == '0' %}
+                    <p>Resting Electrocardiographic Results: Normal</p>
+                {% elif request.form.get('restecg') == '1' %}
+                    <p>Resting Electrocardiographic Results: ST-T wave abnormality</p>
+                {% elif request.form.get('restecg') == '2' %}
+                    <p>Resting Electrocardiographic Results: Probable or definite left ventricular hypertrophy</p>
+                {% endif %}
+                <p>Maximum Heart Rate Achieved: {{ request.form.get('thalach') }}</p>
+                {% if request.form.get('exang') == '0' %}
+                    <p>Exercise Induced Angina: No</p>
+                {% elif request.form.get('exang') == '1' %}
+                    <p>Exercise Induced Angina: Yes</p>
+                {% endif %}
+                <p>ST Depression Induced by Exercise: {{ request.form.get('Oldpeak') }}</p>
+                {% if request.form.get('slope') == '0' %}
+                    <p>Slope of Peak Exercise ST Segment: Upsloping</p>
+                {% elif request.form.get('slope') == '1' %}
+                    <p>Slope of Peak Exercise ST Segment: Flat</p>
+                {% elif request.form.get('slope') == '2' %}
+                    <p>Slope of Peak Exercise ST Segment: Downsloping</p>
+                {% endif %}
+                <p>Number of Major Vessels Colored by Fluoroscopy: {{ request.form.get('CA') }}</p>
+                {% if request.form.get('thal') == '0' %}
+                    <p>Thalassemia: Normal</p>
+                {% elif request.form.get('thal') == '1' %}
+                    <p>Thalassemia: Fixed Defect</p>
+                {% elif request.form.get('thal') == '2' %}
+                    <p>Thalassemia: Reversible Defect</p>
+                {% endif %}
+                <hr>
+                {% if result==1 %}
+                    <p>Prediction: Oops! You have Chances of Heart Disease.</p>
+                {% elif result==0 %}
+                    <p>Prediction: Great! You DON'T have chances of a Heart Disease.</p>
+                {% endif %}
+                <p>Model Accuracy: 98%</p>
+            </div>
+        {% endif %}
+    </div>
 </body>
-
 </html>
