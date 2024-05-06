@@ -54,9 +54,9 @@ def index():
         c = c.most_common(1)[0]
         result = le.inverse_transform([c[0]])[0]
         
-        return render_template('index.htm', col_list=labels, flag=True, input=inputs, input1=output_result, input2=dict( (l, output_result.count(l) ) for l in set(output_result)), input3=c, result=result )    
+        return render_template('index.html', col_list=labels, flag=True, input=inputs, input1=output_result, input2=dict( (l, output_result.count(l) ) for l in set(output_result)), input3=c, result=result )    
 
-    return render_template('index.htm', col_list=labels, flag=False)
+    return render_template('index.html', col_list=labels, flag=False)
 
 if __name__ == '__main__':
     app.run(debug=True)
